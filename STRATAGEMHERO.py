@@ -2,23 +2,27 @@ import pygame
 import random as R
 import json
 from pytimedinput import timedInput
-#
+
 pygame.init()
+pygame.font.init()
 
 #Pygame Variables
 screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
+hd2Font = pygame.font.Font("Fonts\AmericanCaptain-MdEY.otf", 60)
 running = True
+PixelArrayList = []
 
 #Game Variables
 codelist = ["ijklijki"]
 code = R.choice(codelist)
 arrowlist = []
 correct = 0
-global n
 n = len(code)
 codeswitch = True
-
+color1 = pygame.color.Color(102, 102, 102)
+color2 = pygame.color.Color(240, 120, 120)
+colorswitch = False
 #Centering formulas
 if  n%2 == 1:
     x = 384 - 50*int(n/2 - 0.1)
@@ -71,14 +75,21 @@ with open('stratdict.json') as f:
                 #Key press detection
                 if event.key == pygame.K_j and list(code)[correct] == "j":
                     correct += 1
-                if event.key == pygame.K_i and list(code)[correct] == "i":
+                elif event.key == pygame.K_i and list(code)[correct] == "i":
                     correct += 1
-                if event.key == pygame.K_l and list(code)[correct] == "l":
+                elif event.key == pygame.K_l and list(code)[correct] == "l":
                     correct += 1
-                if event.key == pygame.K_k and list(code)[correct] == "k":
+                elif event.key == pygame.K_k and list(code)[correct] == "k":
                     correct += 1
                 else:
-                    pass
+                    correct = 0
+                    for i in range(n):
+                        PixelArrayList.append(pygame.PixelArray(arrowlist[i]))
+                        if PixelArrayList[i] != None:
+                            PixelArrayList[i].replace(color1, color2)
+                    colorswitch = True
+                    startTime = pygame.time.get_ticks()
+                    
         
         if codeswitch == True:
             # typeIndex is the index for type of stratagems
@@ -92,6 +103,7 @@ with open('stratdict.json') as f:
             codeswitch = False
             n = len(code)
 
+
         screen.fill((10, 10, 10))
 
         #Arrow direction deciding
@@ -104,20 +116,50 @@ with open('stratdict.json') as f:
                 index = 2
             if list(code)[i] == "k":
                 index = 3
+        #Error Color Reset
+            if colorswitch:
+                pygame.event.set_blocked(pygame.KEYDOWN)
+                if pygame.time.get_ticks() - startTime > 800:
+                    for i in range(n):
+                            PixelArrayList.append(pygame.PixelArray(arrowlist[i]))
+                            if PixelArrayList[i] != None:
+                                PixelArrayList[i].replace(color2, color1)
+                    colorswitch = False
+                    pygame.event.set_allowed(pygame.KEYDOWN)
+        #Arrow Unlocking after Color Replacing
+            PixelArrayList = []
+            arrowlist[index].unlock()
             screen.blit(arrowlist[index], (x, 400))
         #Arrow completion
             if correct >= i+1:
                 screen.blit(arrowlist[index+4], (x, 400))
-            
-        #Centering
             x += 50
+
+        #Color of Text corresponding to type of Stratagem
+        if str(GenList[typeIndex]) == "Backpacks": #Blue
+            StratColor = (20, 150, 150)
+        if str(GenList[typeIndex]) == "Weapons": #Blue
+            StratColor = (20, 150, 150)
+        if str(GenList[typeIndex]) == "Eagles": #Red
+            StratColor = (180, 30, 30)
+        if str(GenList[typeIndex]) == "Exosuits": #Blue
+            StratColor = (20, 150, 150)
+        if str(GenList[typeIndex]) == "Mission": #Light Yellow
+            StratColor = (200, 200, 80)
+        if str(GenList[typeIndex]) == "Defensive": #Green
+            StratColor = (25, 75, 25)
+        if str(GenList[typeIndex]) == "Orbital": #Red
+            StratColor = (180, 30, 30)
+        #Font Rendering
+        pygame.time.delay(20)
+        StratIndicator = hd2Font.render(f"{GenKeyList[typeIndex][GenIndex]}", True, StratColor)
+        screen.blit(StratIndicator, (100, 100))
+
+        #Centering
         if  n%2 == 1:
             x = 384 - 50*int(n/2 - 0.1)
         else:
             x = 384 - 50*(n/2) + 25
-
-        #Center line(Remove later)
-        pygame.draw.line(surface=screen, color="white", start_pos=(400, 0), end_pos=(400, 600))
 
         pygame.display.flip()
         if correct == n:

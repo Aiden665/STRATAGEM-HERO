@@ -1,5 +1,5 @@
 {
-    "Backpack" : {
+    "Backpacks" : {
         "Jumppack": "kiiki",
         "Shield Generator Pack": "kijljl",
         "Supply Pack": "kjkiik",
@@ -35,12 +35,12 @@
         "Eagle Napalm Strike": "ilki",
         "Eagle Smoke Strike": "ilik",
         "Eagle 110mm Rocket Pods": "ilij",
-        "Eagle 500KG Bomb": "ilkkk",
-        "M-102 Fast Recon Vehicle": "jklklki"
+        "Eagle 500KG Bomb": "ilkkk"
     },
     "Exosuits" : {
         "Patriot Exosuit": "jklijkk",
-        "Emanicpator Exosuit": "jklijki"
+        "Emanicpator Exosuit": "jklijki", 
+        "M-102 Fast Recon Vehicle": "jklklki"
     },
     "Mission" : {
         "Reinforce": "iklji",
