@@ -9,9 +9,10 @@ pygame.font.init()
 #Pygame Variables
 screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
-hd2Font = pygame.font.Font("Fonts\AmericanCaptain-MdEY.otf", 60)
+hd2Font = pygame.font.Font("Fonts/AmericanCaptain-MdEY.otf", 60)
 running = True
 PixelArrayList = []
+pygame.USEREVENT()
 
 #Game Variables
 codelist = ["ijklijki"]
@@ -41,8 +42,8 @@ with open('stratdict.json') as f:
     Boo = False
     GenList = ["Backpack", "Weapons", "Weapons", "Eagles", "Exosuits", "Mission", "Defensive", "Defensive", "Orbital", "Orbital"]
 
-    BackKeys = list(stratDict["Backpack"].keys())
-    BackVal = list(stratDict["Backpack"].values())
+    BackKeys = list(stratDict["Backpacks"].keys())
+    BackVal = list(stratDict["Backpacks"].values())
 
     WeaponKeys = list(stratDict["Weapons"].keys())
     WeaponVal = list(stratDict["Weapons"].values())
