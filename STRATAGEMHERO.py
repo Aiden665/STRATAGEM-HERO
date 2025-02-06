@@ -12,7 +12,10 @@ clock = pygame.time.Clock()
 hd2Font = pygame.font.Font("Fonts/AmericanCaptain-MdEY.otf", 60)
 running = True
 PixelArrayList = []
-pygame.USEREVENT()
+timerBarEvent = pygame.USEREVENT + 1
+timerBarReset = pygame.USEREVENT + 2
+
+pygame.time.set_timer(timerBarEvent, 60)
 
 #Game Variables
 codelist = ["ijklijki"]
@@ -22,8 +25,9 @@ correct = 0
 n = len(code)
 codeswitch = True
 color1 = pygame.color.Color(102, 102, 102)
-color2 = pygame.color.Color(240, 120, 120)
+color2 = pygame.color.Color(200, 80, 80)
 colorswitch = False
+barWidth = 500
 #Centering formulas
 if  n%2 == 1:
     x = 384 - 50*int(n/2 - 0.1)
@@ -90,6 +94,11 @@ with open('stratdict.json') as f:
                             PixelArrayList[i].replace(color1, color2)
                     colorswitch = True
                     startTime = pygame.time.get_ticks()
+            
+            if event.type == timerBarEvent:
+                barWidth -= 1
+            if event.type == timerBarReset:
+                barWidth == 500
                     
         
         if codeswitch == True:
