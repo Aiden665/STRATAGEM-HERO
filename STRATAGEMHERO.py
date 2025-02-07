@@ -13,9 +13,9 @@ hd2Font = pygame.font.Font("Fonts/AmericanCaptain-MdEY.otf", 60)
 running = True
 PixelArrayList = []
 timerBarEvent = pygame.USEREVENT + 1
-timerBarReset = pygame.USEREVENT + 2
+difficultyEvent = pygame.USEREVENT + 2
 
-pygame.time.set_timer(timerBarEvent, 60)
+pygame.time.set_timer(timerBarEvent, 20)
 
 #Game Variables
 codelist = ["ijklijki"]
@@ -28,6 +28,7 @@ color1 = pygame.color.Color(102, 102, 102)
 color2 = pygame.color.Color(200, 80, 80)
 colorswitch = False
 barWidth = 500
+difficulty = 1
 #Centering formulas
 if  n%2 == 1:
     x = 384 - 50*int(n/2 - 0.1)
@@ -96,10 +97,10 @@ with open('stratdict.json') as f:
                     startTime = pygame.time.get_ticks()
             
             if event.type == timerBarEvent:
-                barWidth -= 1
-            if event.type == timerBarReset:
-                barWidth == 500
-                    
+                barWidth -= (1 + (difficulty))
+            if event.type == difficultyEvent:
+                difficulty += 1000000
+            print(event.type)
         
         if codeswitch == True:
             # typeIndex is the index for type of stratagems
@@ -110,6 +111,12 @@ with open('stratdict.json') as f:
             GenIndex = R.randrange(len(randValList))
             # code needs to choose a string of ilkj's. TempList chooses the code from a random Val List and random Index, outputting the string
             code = list(randValList[GenIndex])
+            
+            #Bar Reset
+            if barWidth >= 400:
+                barWidth += 500 - barWidth
+            else:
+                barWidth += 100
             codeswitch = False
             n = len(code)
 
@@ -135,6 +142,7 @@ with open('stratdict.json') as f:
                             if PixelArrayList[i] != None:
                                 PixelArrayList[i].replace(color2, color1)
                     colorswitch = False
+                    pygame.event.post(pygame.event.Event(difficultyEvent))
                     pygame.event.set_allowed(pygame.KEYDOWN)
         #Arrow Unlocking after Color Replacing
             PixelArrayList = []
@@ -160,6 +168,10 @@ with open('stratdict.json') as f:
             StratColor = (25, 75, 25)
         if str(GenList[typeIndex]) == "Orbital": #Red
             StratColor = (180, 30, 30)
+
+        #Bar Rendering
+        pygame.draw.rect(surface=screen, color=(255, 255, 255), rect=pygame.Rect(400-(barWidth/2), 350, barWidth, 10))
+
         #Font Rendering
         pygame.time.delay(20)
         StratIndicator = hd2Font.render(f"{GenKeyList[typeIndex][GenIndex]}", True, StratColor)
