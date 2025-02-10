@@ -13,7 +13,6 @@ hd2Font = pygame.font.Font("Fonts/AmericanCaptain-MdEY.otf", 60)
 running = True
 PixelArrayList = []
 timerBarEvent = pygame.USEREVENT + 1
-difficultyEvent = pygame.USEREVENT + 2
 
 pygame.time.set_timer(timerBarEvent, 20)
 
@@ -28,7 +27,7 @@ color1 = pygame.color.Color(102, 102, 102)
 color2 = pygame.color.Color(200, 80, 80)
 colorswitch = False
 barWidth = 500
-difficulty = 1
+difficulty = 2
 #Centering formulas
 if  n%2 == 1:
     x = 384 - 50*int(n/2 - 0.1)
@@ -97,10 +96,7 @@ with open('stratdict.json') as f:
                     startTime = pygame.time.get_ticks()
             
             if event.type == timerBarEvent:
-                barWidth -= (1 + (difficulty))
-            if event.type == difficultyEvent:
-                difficulty += 1000000
-            print(event.type)
+                barWidth -= difficulty
         
         if codeswitch == True:
             # typeIndex is the index for type of stratagems
@@ -142,7 +138,6 @@ with open('stratdict.json') as f:
                             if PixelArrayList[i] != None:
                                 PixelArrayList[i].replace(color2, color1)
                     colorswitch = False
-                    pygame.event.post(pygame.event.Event(difficultyEvent))
                     pygame.event.set_allowed(pygame.KEYDOWN)
         #Arrow Unlocking after Color Replacing
             PixelArrayList = []
@@ -171,7 +166,6 @@ with open('stratdict.json') as f:
 
         #Bar Rendering
         pygame.draw.rect(surface=screen, color=(255, 255, 255), rect=pygame.Rect(400-(barWidth/2), 350, barWidth, 10))
-
         #Font Rendering
         pygame.time.delay(20)
         StratIndicator = hd2Font.render(f"{GenKeyList[typeIndex][GenIndex]}", True, StratColor)
@@ -183,6 +177,9 @@ with open('stratdict.json') as f:
         else:
             x = 384 - 50*(n/2) + 25
 
+        #Lose condition
+        if barWidth <= 0:
+            screen.blit("EndScreen")
         pygame.display.flip()
         if correct == n:
             pygame.time.delay(100)

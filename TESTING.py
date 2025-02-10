@@ -7,18 +7,20 @@ clock = pygame.time.Clock()
 running = True
 apple = False
 
-font = pygame.font.Font("Fonts\Hatch.ttf")
-
+randevent = pygame.USEREVENT + 1
+eventrandevent = pygame.event.Event(randevent)
 
 yellow = pygame.color.Color(180, 180, 100)
 while running:
-    if pygame.event.get(pygame.QUIT):
+        if pygame.event.get(pygame.QUIT):
             running = False
-
-          
-    screen.fill((0,0,0))
-    
+        if pygame.event.get(randevent):
+              print("EVENT")
 
 
-    pygame.display.flip()
-    clock.tick(60)
+        screen.fill((0,0,0))
+        pygame.event.post(eventrandevent)
+
+
+        pygame.display.flip()
+        clock.tick(60)
