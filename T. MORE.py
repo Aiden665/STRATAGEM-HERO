@@ -1,3 +1,2 @@
-Apple = {
-    "jeans": "12"
-}
+apple = "apple Pie"
+print(apple.replace(" ", "_"))

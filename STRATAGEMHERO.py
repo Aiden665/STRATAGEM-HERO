@@ -7,9 +7,10 @@ pygame.init()
 pygame.font.init()
 
 #Pygame Variables
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((1500, 800))
 clock = pygame.time.Clock()
 hd2Font = pygame.font.Font("Fonts/AmericanCaptain-MdEY.otf", 60)
+title = pygame.image.load("StratagemHeroImages/TitleCard.png")
 running = True
 PixelArrayList = []
 timerBarEvent = pygame.USEREVENT + 1
@@ -142,40 +143,30 @@ with open('stratdict.json') as f:
         #Arrow Unlocking after Color Replacing
             PixelArrayList = []
             arrowlist[index].unlock()
-            screen.blit(arrowlist[index], (x, 400))
+            screen.blit(arrowlist[index], (x, 500))
         #Arrow completion
             if correct >= i+1:
-                screen.blit(arrowlist[index+4], (x, 400))
+                screen.blit(arrowlist[index+4], (x, 500))
             x += 50
 
-        #Color of Text corresponding to type of Stratagem
-        if str(GenList[typeIndex]) == "Backpacks": #Blue
-            StratColor = (20, 150, 150)
-        if str(GenList[typeIndex]) == "Weapons": #Blue
-            StratColor = (20, 150, 150)
-        if str(GenList[typeIndex]) == "Eagles": #Red
-            StratColor = (180, 30, 30)
-        if str(GenList[typeIndex]) == "Exosuits": #Blue
-            StratColor = (20, 150, 150)
-        if str(GenList[typeIndex]) == "Mission": #Light Yellow
-            StratColor = (200, 200, 80)
-        if str(GenList[typeIndex]) == "Defensive": #Green
-            StratColor = (25, 75, 25)
-        if str(GenList[typeIndex]) == "Orbital": #Red
-            StratColor = (180, 30, 30)
-
         #Bar Rendering
-        pygame.draw.rect(surface=screen, color=(255, 255, 255), rect=pygame.Rect(400-(barWidth/2), 350, barWidth, 10))
+        pygame.draw.rect(surface=screen, color=(255, 255, 255), rect=pygame.Rect((screen.get_width()/2)-(barWidth/2), 550, barWidth, 10))
         #Font Rendering
-        pygame.time.delay(20)
-        StratIndicator = hd2Font.render(f"{GenKeyList[typeIndex][GenIndex]}", True, StratColor)
-        screen.blit(StratIndicator, (100, 100))
-
+        StratIndicator = hd2Font.render(f"{GenKeyList[typeIndex][GenIndex]}", True, (200, 160, 10))
+        screen.blit(StratIndicator, (400, 400))
+        #TitleCard Rendering
+        screen.blit(title, (((screen.get_width()-title.get_width())/2), 50))
+        #STRATAGEM_ICON rendering
+        strat_Name = GenKeyList[typeIndex][GenIndex].replace(' ', '_')
+        try:
+            screen.blit(pygame.image.load(f"StratagemIcons/{strat_Name}_Icon.png"), (100, 100))
+        except:
+            pass
         #Centering
         if  n%2 == 1:
-            x = 384 - 50*int(n/2 - 0.1)
+            x = (((screen.get_width())/2)-16) - 50*int(n/2 - 0.1)
         else:
-            x = 384 - 50*(n/2) + 25
+            x = (((screen.get_width())/2)-16) - 50*(n/2) + 25
 
         #Lose condition
         if barWidth <= 0:
