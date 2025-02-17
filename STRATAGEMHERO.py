@@ -159,7 +159,7 @@ with open('stratdict.json') as f:
         #STRATAGEM_ICON rendering
         strat_Name = GenKeyList[typeIndex][GenIndex].replace(' ', '_')
         try:
-            screen.blit(pygame.image.load(f"StratagemIcons/{strat_Name}_Icon.png"), (100, 100))
+            screen.blit(pygame.image.load(f"StratagemIcons/{strat_Name}_Icon.png"), (((screen.get_width())-(44))/2, 600))
         except:
             pass
         #Centering
