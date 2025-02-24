@@ -29,6 +29,8 @@ color2 = pygame.color.Color(200, 80, 80)
 colorswitch = False
 barWidth = 500
 difficulty = 2
+
+
 #Centering formulas
 if  n%2 == 1:
     x = 384 - 50*int(n/2 - 0.1)
@@ -45,31 +47,11 @@ for i in range(4):
 with open('stratdict.json') as f:
     stratDict = json.load(f)
     Boo = False
-    GenList = ["Backpack", "Weapons", "Weapons", "Eagles", "Exosuits", "Mission", "Defensive", "Defensive", "Orbital", "Orbital"]
+    
+    GenKEYList = list(stratDict.keys())
+    GenVALList = list(stratDict.values())
+    
 
-    BackKeys = list(stratDict["Backpacks"].keys())
-    BackVal = list(stratDict["Backpacks"].values())
-
-    WeaponKeys = list(stratDict["Weapons"].keys())
-    WeaponVal = list(stratDict["Weapons"].values())
-
-    EagleKeys = list(stratDict["Eagles"].keys())
-    EagleVal = list(stratDict["Eagles"].values())
-
-    ExoKeys = list(stratDict["Exosuits"].keys())
-    ExoVal = list(stratDict["Exosuits"].values())
-
-    MissionKeys = list(stratDict["Mission"].keys())
-    MissionVal = list(stratDict["Mission"].values())
-
-    DefensiveKeys = list(stratDict["Defensive"].keys())
-    DefensiveVal = list(stratDict["Defensive"].values())
-
-    OrbitalKeys = list(stratDict["Orbital"].keys())
-    OrbitalVal = list(stratDict["Orbital"].values())
-
-    GenCodeList = [BackVal, WeaponVal, WeaponVal, EagleVal, ExoVal, MissionVal, DefensiveVal, DefensiveVal, OrbitalVal, OrbitalVal]
-    GenKeyList = [BackKeys, WeaponKeys, WeaponKeys, EagleKeys, ExoKeys, MissionKeys, DefensiveKeys, DefensiveKeys, OrbitalKeys, OrbitalKeys]
 
     while running:
 
@@ -100,15 +82,10 @@ with open('stratdict.json') as f:
                 barWidth -= difficulty
         
         if codeswitch == True:
-            # typeIndex is the index for type of stratagems
-            typeIndex = R.randrange(len(GenList))
-            # randValList chooses a random Val List, (GenCodeList IS A LIST OF LISTS)
-            randValList = GenCodeList[typeIndex]   
-            # index that stays the same for Strat Names and Codes
-            GenIndex = R.randrange(len(randValList))
-            # code needs to choose a string of ilkj's. TempList chooses the code from a random Val List and random Index, outputting the string
-            code = list(randValList[GenIndex])
             
+            typeIndex = R.randrange(len(GenKEYList))
+            print(GenKEYList[typeIndex])
+            code = GenVALList[typeIndex]
             #Bar Reset
             if barWidth >= 400:
                 barWidth += 500 - barWidth
@@ -152,16 +129,16 @@ with open('stratdict.json') as f:
         #Bar Rendering
         pygame.draw.rect(surface=screen, color=(255, 255, 255), rect=pygame.Rect((screen.get_width()/2)-(barWidth/2), 550, barWidth, 10))
         #Font Rendering
-        StratIndicator = hd2Font.render(f"{GenKeyList[typeIndex][GenIndex]}", True, (200, 160, 10))
+        StratIndicator = hd2Font.render(f"{GenKEYList[typeIndex]}", True, (200, 160, 10))
         screen.blit(StratIndicator, (400, 400))
         #TitleCard Rendering
         screen.blit(title, (((screen.get_width()-title.get_width())/2), 50))
         #STRATAGEM_ICON rendering
-        strat_Name = GenKeyList[typeIndex][GenIndex].replace(' ', '_')
+        strat_Name = GenKEYList[typeIndex].replace(' ', '_')
         try:
             screen.blit(pygame.image.load(f"StratagemIcons/{strat_Name}_Icon.png"), (((screen.get_width())-(44))/2, 600))
         except:
-            pass
+            print(f"StratagemIcons/{strat_Name}_Icon.png")
         #Centering
         if  n%2 == 1:
             x = (((screen.get_width())/2)-16) - 50*int(n/2 - 0.1)
@@ -170,7 +147,7 @@ with open('stratdict.json') as f:
 
         #Lose condition
         if barWidth <= 0:
-            screen.blit("EndScreen")
+            running=False
         pygame.display.flip()
         if correct == n:
             pygame.time.delay(100)

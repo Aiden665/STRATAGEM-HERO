@@ -1,5 +1,4 @@
 {
-    "Backpacks" : {
         "Jumppack": "kiiki",
         "Shield Generator Pack": "kijljl",
         "Supply Pack": "kjkiik",
@@ -7,42 +6,34 @@
         "Guard Dog": "kijilk",
         "Guard Dog Rover": "kijill",
         "Guard Dog Breath": "kijili",
-        "Directional Sheild": "kijlii"
-    },
-    "Weapons" : {
+        "Directional Shield": "kijlii",
         "MG-43 Machine Gun": "kjkil",
-        "APW-1 Anti-Material Rifle": "kjlik",
+        "APW-1 Anti-Materiel Rifle": "kjlik",
         "M-105 Stalwart": "kjkiij",
         "EAT-17 Expendable Anti-Tank": "kkjil",
         "Commando": "kjikl",
-        "GR-8 ecoiless Rifle": "kjllj",
+        "GR-8 Recoiless Rifle": "kjllj",
         "FLAM-40 Flamethrower": "kjiki",
         "AC-8 Autocannon": "kjkiil",
-        "MG-43 Heavy Machine Gun": "kjikk",
+        "MG-206 Heavy Machine Gun": "kjikk",
         "Railgun": "klkijl",
         "Spear": "kkikk",
-        "Grenade Launcher": "kjijk",
-        "Laser Cannon": "kjkij",
-        "Quasar Cannon": "kkijl",
+        "GL-21 Grenade Launcher": "kjijk",
+        "LAS-98 Laser Cannon": "kjkij",
+        "LAS-99 Quasar Cannon": "kkijl",
         "Airburst Rocket Launcher": "kiijl",
         "W.A.S.P. Launcher": "kkikl",
-        "Sterilizer": "kjikj"
-    },
-    "Eagles" : {
+        "Sterilizer": "kjikj",
         "Eagle Strafing Run": "ill",
         "Eagle Airstrike": "ilkl",
         "Eagle Cluster Bomb": "ilkkl",
         "Eagle Napalm Airstrike": "ilki",
         "Eagle Smoke Strike": "ilik",
         "Eagle 110mm Rocket Pods": "ilij",
-        "Eagle 500KG Bomb": "ilkkk"
-    },
-    "Exosuits" : {
+        "Eagle 500KG Bomb": "ilkkk",
         "Patriot Exosuit": "jklijkk",
-        "Emanicpator Exosuit": "jklijki", 
-        "M-102 Fast Recon Vehicle": "jklklki"
-    },
-    "Mission" : {
+        "Emancipator Exosuit": "jklijki", 
+        "M-102 Fast Recon Vehicle": "jklklki",
         "Reinforce": "iklji",
         "SOS Beacon": "ikli",
         "Resupply": "kkil",
@@ -52,14 +43,12 @@
         "Upload Data": "jliii",
         "Eagle Rearm": "iijil",
         "SEAF Artillery": "liik",
-        "Super Earth Flag": "kiki"
-    },
-    "Defensive" : {
+        "Super Earth Flag": "kiki",
         "HMG Emplacement": "kijllj",
         "Anti-Tank Emplacement": "kijlll",
         "Shield Generator Relay": "kkjljl",
         "Tesla Tower": "kilijl",
-        "Anti-Personell Minefield": "kjil",
+        "Anti-Personnel Minefield": "kjil",
         "Incendiary Mines": "kjjk",
         "Anti-Tank Mines": "kjii",
         "Machine Gun Sentry": "killi",
@@ -68,9 +57,7 @@
         "Autocannon Sentry": "kiliji",
         "Rocket Sentry": "killj",
         "EMSMortar Sentry": "kilkl",
-        "Flamethrower Sentry": "kilkii"
-    },
-    "Orbital" : {
+        "Flamethrower Sentry": "kilkii",
         "Orbital Gatling Barrage": "lkjii",
         "Orbital Airburst Strike": "lll",
         "Orbital 120MM HE Barrage": "llkjlk",
@@ -83,5 +70,4 @@
         "Orbital EMS Strike": "lljk",
         "Orbital Smoke Strike": "llki",
         "Orbital Napalm Barrage": "llkjli"
-    }
 }
