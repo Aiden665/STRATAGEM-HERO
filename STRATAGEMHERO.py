@@ -7,7 +7,7 @@ pygame.init()
 pygame.font.init()
 
 #Pygame Variables
-screen = pygame.display.set_mode((1500, 800))
+screen = pygame.display.set_mode((800, 800))
 clock = pygame.time.Clock()
 hd2Font = pygame.font.Font("Fonts/AmericanCaptain-MdEY.otf", 60)
 title = pygame.image.load("StratagemHeroImages/TitleCard.png")
@@ -130,7 +130,7 @@ with open('stratdict.json') as f:
         pygame.draw.rect(surface=screen, color=(255, 255, 255), rect=pygame.Rect((screen.get_width()/2)-(barWidth/2), 550, barWidth, 10))
         #Font Rendering
         StratIndicator = hd2Font.render(f"{GenKEYList[typeIndex]}", True, (200, 160, 10))
-        screen.blit(StratIndicator, (400, 400))
+        screen.blit(StratIndicator, ((screen.get_width()-StratIndicator.get_width())/2, 400))
         #TitleCard Rendering
         screen.blit(title, (((screen.get_width()-title.get_width())/2), 50))
         #STRATAGEM_ICON rendering
