@@ -136,7 +136,7 @@ with open('stratdict.json') as f:
         #STRATAGEM_ICON rendering
         strat_Name = GenKEYList[typeIndex].replace(' ', '_')
         try:
-            screen.blit(pygame.image.load(f"StratagemIcons/{strat_Name}_Icon.png"), (((screen.get_width())-(44))/2, 600))
+            screen.blit(pygame.transform.scale(pygame.image.load(f"StratagemIcons/{strat_Name}_Icon.png"), (45,45)), (((screen.get_width())-(44))/2, 600))
         except:
             print(f"StratagemIcons/{strat_Name}_Icon.png")
         #Centering
@@ -147,10 +147,14 @@ with open('stratdict.json') as f:
 
         #Lose condition
         if barWidth <= 0:
-            running=False
+            screen.fill((10, 10, 10))
+            screen.blit(hd2Font.render("GAME OVER", True, (240, 240, 240)), ((screen.get_width()-StratIndicator.get_width())/2, 400))
+            screen.blit(hd2Font.render("Press any key to Restart", True, (240, 240, 240)), ((screen.get_width()-StratIndicator.get_width())/2, 500))
         pygame.display.flip()
         if correct == n:
             pygame.time.delay(100)
             codeswitch = True
             correct = 0
+
+
         clock.tick(60)
