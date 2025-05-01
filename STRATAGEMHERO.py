@@ -19,17 +19,17 @@ pygame.time.set_timer(timerBarEvent, 20)
 
 #Game Variables
 codelist = ["ijklijki"]
-code = R.choice(codelist)
+code = ""
 arrowlist = []
 correct = 0
-n = len(code)
+n = 0
 codeswitch = True
 color1 = pygame.color.Color(102, 102, 102)
 color2 = pygame.color.Color(200, 80, 80)
-colorswitch = False
 barWidth = 500
 difficulty = 2
-
+strataQue = []
+colorswitch = False
 
 #Centering formulas
 if  n%2 == 1:
@@ -61,13 +61,13 @@ with open('stratdict.json') as f:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 #Key press detection
-                if event.key == pygame.K_j and list(code)[correct] == "j":
+                if (event.key == pygame.K_j or event.key == pygame.K_a) and list(strataQue[-1][0])[correct] == "j":
                     correct += 1
-                elif event.key == pygame.K_i and list(code)[correct] == "i":
+                elif (event.key == pygame.K_i or event.key == pygame.K_w) and list(strataQue[-1][0])[correct] == "i":
                     correct += 1
-                elif event.key == pygame.K_l and list(code)[correct] == "l":
+                elif (event.key == pygame.K_l or event.key == pygame.K_d) and list(strataQue[-1][0])[correct] == "l":
                     correct += 1
-                elif event.key == pygame.K_k and list(code)[correct] == "k":
+                elif (event.key == pygame.K_k or event.key == pygame.K_s) and list(strataQue[-1][0])[correct] == "k":
                     correct += 1
                 else:
                     correct = 0
@@ -83,29 +83,33 @@ with open('stratdict.json') as f:
         
         if codeswitch == True:
             
-            typeIndex = R.randrange(len(GenKEYList))
-            print(GenKEYList[typeIndex])
-            code = GenVALList[typeIndex]
+            while len(strataQue) < 7:
+                #Initial Stratagem Que Creation
+                typeIndex = R.randrange(len(GenKEYList))
+                code = GenVALList[typeIndex], GenKEYList[typeIndex]
+                strataQue.append(code)
             #Bar Reset
             if barWidth >= 400:
                 barWidth += 500 - barWidth
             else:
                 barWidth += 100
             codeswitch = False
-            n = len(code)
+            n = len(strataQue[-1][0])
 
 
         screen.fill((10, 10, 10))
 
         #Arrow direction deciding
+        
         for i in range(n):
-            if list(code)[i] == "l":
+
+            if list(strataQue[-1][0])[i] == "l":
                 index = 0
-            if list(code)[i] == "i":
+            if list(strataQue[-1][0])[i] == "i":
                 index = 1
-            if list(code)[i] == "j":
+            if list(strataQue[-1][0])[i] == "j":
                 index = 2
-            if list(code)[i] == "k":
+            if list(strataQue[-1][0])[i] == "k":
                 index = 3
         #Error Color Reset
             if colorswitch:
@@ -134,27 +138,42 @@ with open('stratdict.json') as f:
         #TitleCard Rendering
         screen.blit(title, (((screen.get_width()-title.get_width())/2), 50))
         #STRATAGEM_ICON rendering
-        strat_Name = GenKEYList[typeIndex].replace(' ', '_')
+
         try:
-            screen.blit(pygame.transform.scale(pygame.image.load(f"StratagemIcons/{strat_Name}_Icon.png"), (45,45)), (((screen.get_width())-(44))/2, 600))
+            for i in range(len(strataQue)):
+                screen.blit(pygame.transform.scale(pygame.image.load(f"StratagemIcons/{strataQue[-1 + i][1].replace(' ', '_')}_Icon.png"), (45,45)), ((((screen.get_width())-(44))/2)-200 + 50*i, 600))
+            #screen.blit(pygame.transform.scale(pygame.image.load(f"StratagemIcons/{strataQue[-1][1].replace(' ', '_')}_Icon.png"), (45,45)), ((((screen.get_width())-(44))/2), 600))
+
         except:
-            print(f"StratagemIcons/{strat_Name}_Icon.png")
+            print(f"StratagemIcons/{strataQue[-1][1].replace(' ', '_')}_Icon.png")
         #Centering
         if  n%2 == 1:
             x = (((screen.get_width())/2)-16) - 50*int(n/2 - 0.1)
         else:
             x = (((screen.get_width())/2)-16) - 50*(n/2) + 25
 
+        if correct == n:
+            pygame.time.delay(100)
+            strataQue.pop(0)
+            codeswitch = True
+            correct = 0
+
         #Lose condition
         if barWidth <= 0:
             screen.fill((10, 10, 10))
             screen.blit(hd2Font.render("GAME OVER", True, (240, 240, 240)), ((screen.get_width()-StratIndicator.get_width())/2, 400))
             screen.blit(hd2Font.render("Press any key to Restart", True, (240, 240, 240)), ((screen.get_width()-StratIndicator.get_width())/2, 500))
+            if pygame.event.get(pygame.KEYDOWN):
+                strataQue = []
+                barWidth = 500
+                correct = 0
+                codeswitch = True
+                colorswitch = False
+                PixelArrayList = []
+                code = ""
+                n = 0
+                difficulty = 2
         pygame.display.flip()
-        if correct == n:
-            pygame.time.delay(100)
-            codeswitch = True
-            correct = 0
 
 
         clock.tick(60)
