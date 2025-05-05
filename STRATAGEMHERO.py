@@ -30,6 +30,7 @@ barWidth = 500
 strataQue = []
 round = 1
 colorswitch = False
+score = 0
 
 #Centering formulas
 if  n%2 == 1:
@@ -61,13 +62,13 @@ with open('stratdict.json') as f:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and len(strataQue) > 0:
                 #Key press detection
-                if (event.key == pygame.K_j or event.key == pygame.K_a) and list(strataQue[0][0])[correct] == "j":
+                if (event.key == pygame.K_j or event.key == pygame.K_a or event.key == pygame.K_LEFT) and list(strataQue[0][0])[correct] == "j":
                     correct += 1
-                elif (event.key == pygame.K_i or event.key == pygame.K_w) and list(strataQue[0][0])[correct] == "i":
+                elif (event.key == pygame.K_i or event.key == pygame.K_w or event.key == pygame.K_UP) and list(strataQue[0][0])[correct] == "i":
                     correct += 1
-                elif (event.key == pygame.K_l or event.key == pygame.K_d) and list(strataQue[0][0])[correct] == "l":
+                elif (event.key == pygame.K_l or event.key == pygame.K_d or event.key == pygame.K_RIGHT) and list(strataQue[0][0])[correct] == "l":
                     correct += 1
-                elif (event.key == pygame.K_k or event.key == pygame.K_s) and list(strataQue[0][0])[correct] == "k":
+                elif (event.key == pygame.K_k or event.key == pygame.K_s or event.key == pygame.K_DOWN) and list(strataQue[0][0])[correct] == "k":
                     correct += 1
                 else:
                     correct = 0
@@ -79,7 +80,7 @@ with open('stratdict.json') as f:
                     startTime = pygame.time.get_ticks()
             
             if event.type == timerBarEvent:
-                barWidth -= 1 + (round)/5
+                barWidth -= 1.5 + (round)/5
         
         if codeswitch == True:
             
@@ -87,7 +88,8 @@ with open('stratdict.json') as f:
                 #Initial Stratagem Que Creation
                 typeIndex = R.randrange(len(GenKEYList))
                 code = GenVALList[typeIndex], GenKEYList[typeIndex]
-                strataQue.append(code)
+                if code[0] not in strataQue:
+                    strataQue.append(code)
             #Bar Reset
             if barWidth >= 400:
                 barWidth += 500 - barWidth
@@ -157,19 +159,21 @@ with open('stratdict.json') as f:
         if correct == n:
             strataQue.pop(0)
             correct = 0
-            barWidth += 60 + 10*round
+            barWidth += 20 * len(arrowlist) + 10 * round
             pygame.display.flip()
             pygame.time.delay(40)
+            score += 10 * len(arrowlist)
 
         #Round increment
         if len(strataQue) == 0:
             round += 1
             screen.fill((10, 10, 10))
-            screen.blit(hd2Font.render(f"Round {round}", True, (255, 233, 0)), ((screen.get_width()-StratIndicator.get_width())/2, 400))
+            screen.blit(title, (((screen.get_width()-title.get_width())/2), 50))
+            screen.blit(hd2Font.render(f"Round {round}", True, (255, 233, 0)), (screen.get_width()/2 - 50, 500))
             pygame.display.flip()
-            pygame.time.delay(1000)
+            pygame.time.delay(1500)
             codeswitch = True
-
+            barWidth = 500
         #Lose condition
         if barWidth <= 0:
             screen.fill((10, 10, 10))
@@ -177,6 +181,7 @@ with open('stratdict.json') as f:
             screen.blit(hd2Font.render("Press any key to Restart", True, (240, 240, 240)), ((screen.get_width()-StratIndicator.get_width())/2, 500))
             pygame.display.flip()
             pygame.time.delay(500)
+
             if pygame.event.get(pygame.KEYDOWN):
                 strataQue = []
                 barWidth = 500
@@ -189,5 +194,8 @@ with open('stratdict.json') as f:
                 round = 1
         pygame.display.flip()
 
+        #Bar Width limit
+        if barWidth >= 500:
+            barWidth = 500
 
         clock.tick(60)
