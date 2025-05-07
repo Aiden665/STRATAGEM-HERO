@@ -9,7 +9,7 @@ pygame.font.init()
 #Pygame Variables
 screen = pygame.display.set_mode((800, 800))
 clock = pygame.time.Clock()
-hd2Font = pygame.font.Font("Fonts/AmericanCaptain-MdEY.otf", 60)
+hd2Font = pygame.font.Font("/Users/za9019476/Documents/GitHub/STRATAGEM-HERO/Fonts/Swiss 721 Extended Bold.otf", 30)
 title = pygame.image.load("StratagemHeroImages/TitleCard.png")
 running = True
 PixelArrayList = []
@@ -31,6 +31,8 @@ strataQue = []
 round = 1
 colorswitch = False
 score = 0
+scoretimer = 800
+scoretimerAcumulator = 100
 
 #Centering formulas
 if  n%2 == 1:
@@ -88,7 +90,7 @@ with open('stratdict.json') as f:
                 #Initial Stratagem Que Creation
                 typeIndex = R.randrange(len(GenKEYList))
                 code = GenVALList[typeIndex], GenKEYList[typeIndex]
-                if code[0] not in strataQue:
+                if code not in strataQue:
                     strataQue.append(code)
             #Bar Reset
             if barWidth >= 400:
@@ -132,23 +134,28 @@ with open('stratdict.json') as f:
                 x += 50
 
         #Bar Rendering
-        pygame.draw.rect(surface=screen, color=(255, 255, 255), rect=pygame.Rect((screen.get_width()/2)-(barWidth/2), 550, barWidth, 10))
+        pygame.draw.rect(surface=screen, color=(255, 231, 16), rect=pygame.Rect((screen.get_width()/2)-(barWidth/2), 550, barWidth, 10))
+
         #Font Rendering
         if len(strataQue) > 0:
-            StratIndicator = hd2Font.render(f"{strataQue[0][1]}", True, (255, 233, 0))
-        screen.blit(StratIndicator, ((screen.get_width()-StratIndicator.get_width())/2, 400))
+            StratIndicator = hd2Font.render(f"{strataQue[0][1]}", True, (0, 0, 0))
+        pygame.draw.rect(surface=screen, color=(255, 231, 16), rect=pygame.Rect((screen.get_width()/2) - 250, 450, 500, 34))
+        screen.blit(StratIndicator, ((screen.get_width()-StratIndicator.get_width())/2, 450))
+
         #TitleCard Rendering
-        screen.blit(title, (((screen.get_width()-title.get_width())/2), 50))
+        screen.blit(title, (((screen.get_width()-title.get_width())/2), 120))
+        
         #STRATAGEM_ICON rendering
-        pygame.draw.rect(screen, (240, 240, 10), (screen.get_width()/2-22 - 100, 600, 44, 44), 2)
+        pygame.draw.rect(screen, (240, 240, 10), (screen.get_width()/2-22 - 100, 400, 44, 44), 2)
         for i in range(5):
             try:
-                screen.blit(pygame.transform.scale(pygame.image.load(f"StratagemIcons/{strataQue[i][1].replace(' ', '_')}_Icon.png"), (45,45)), ((((screen.get_width())-(44))/2)- 100 + 50*i, 600))
+                screen.blit(pygame.transform.scale(pygame.image.load(f"StratagemIcons/{strataQue[i][1].replace(' ', '_')}_Icon.png"), (45,45)), ((((screen.get_width())-(44))/2)- 100 + 50*i, 400))
             except:
                 pass
-        #screen.blit(pygame.transform.scale(pygame.image.load(f"StratagemIcons/{strataQue[-1][1].replace(' ', '_')}_Icon.png"), (45,45)), ((((screen.get_width())-(44))/2), 600))
-
-            
+        #Score Rendering
+        screen.blit(pygame.font.Font("Fonts/Swiss 721 Extended Bold.otf", 20).render(f"Score: {score}", True, (255, 255, 255)), (550, 400))
+        #Round Rendering
+        screen.blit(pygame.font.Font("Fonts/Swiss 721 Extended Bold.otf", 20).render(f"Round: {round}", True, (255, 255, 255)), (150, 400))
         #Centering
         if  n%2 == 1:
             x = (((screen.get_width())/2)-16) - 50*int(n/2 - 0.1)
@@ -157,23 +164,29 @@ with open('stratdict.json') as f:
 
         #Correct checking
         if correct == n:
-            strataQue.pop(0)
             correct = 0
-            barWidth += 20 * len(arrowlist) + 10 * round
+            barWidth += 20 * len(strataQue[0][0]) + 10 * round
             pygame.display.flip()
             pygame.time.delay(40)
-            score += 10 * len(arrowlist)
+            score += 5 * len(strataQue[0][0])
+            strataQue.pop(0)
+            #Score Timer
+            if scoretimer > 0:
+                scoretimerAcumulator += scoretimer
 
         #Round increment
         if len(strataQue) == 0:
             round += 1
+            score * (scoretimerAcumulator/1000)
             screen.fill((10, 10, 10))
-            screen.blit(title, (((screen.get_width()-title.get_width())/2), 50))
-            screen.blit(hd2Font.render(f"Round {round}", True, (255, 233, 0)), (screen.get_width()/2 - 50, 500))
+            screen.blit(title, (((screen.get_width()-title.get_width())/2), 120))
+            screen.blit(hd2Font.render(f"Round {round}", True, (255, 233, 0)), (screen.get_width()/2 - 50, 380))
+            screen.blit(pygame.font.Font("Fonts/Swiss 721 Extended Bold.otf", 20).render(f"Score: {score}", True, (255, 255, 255)), (screen.get_width()/2 - 50, 420))
             pygame.display.flip()
-            pygame.time.delay(1500)
+            pygame.time.delay(2000)
             codeswitch = True
             barWidth = 500
+            scoretimerAcumulator = 100
         #Lose condition
         if barWidth <= 0:
             screen.fill((10, 10, 10))
@@ -198,4 +211,5 @@ with open('stratdict.json') as f:
         if barWidth >= 500:
             barWidth = 500
 
+        scoretimer -= 1
         clock.tick(60)
