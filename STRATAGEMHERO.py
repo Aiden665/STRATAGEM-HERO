@@ -85,6 +85,9 @@ with open('stratdict.json') as f:
                 barWidth -= 1.5 + (round)/5
         
         if codeswitch == True:
+            #Bar Reset
+            if barWidth >= 500:
+                barWidth = 500
             
             while len(strataQue) < 5 + round:
                 #Initial Stratagem Que Creation
@@ -92,15 +95,11 @@ with open('stratdict.json') as f:
                 code = GenVALList[typeIndex], GenKEYList[typeIndex]
                 if code not in strataQue:
                     strataQue.append(code)
-            #Bar Reset
-            if barWidth >= 400:
-                barWidth += 500 - barWidth
-            else:
-                barWidth += 100
+                    
             codeswitch = False
 
 
-        screen.fill((10, 10, 10))
+        screen.fill((10, 10, 20))
 
         #Arrow direction deciding
         if len(strataQue) > 0:
@@ -144,7 +143,7 @@ with open('stratdict.json') as f:
 
         #TitleCard Rendering
         screen.blit(title, (((screen.get_width()-title.get_width())/2), 120))
-        
+    
         #STRATAGEM_ICON rendering
         pygame.draw.rect(screen, (240, 240, 10), (screen.get_width()/2-22 - 100, 400, 44, 44), 2)
         for i in range(5):
@@ -176,22 +175,25 @@ with open('stratdict.json') as f:
 
         #Round increment
         if len(strataQue) == 0:
+            barWidth = 500
             round += 1
             score * (scoretimerAcumulator/1000)
-            screen.fill((10, 10, 10))
+            screen.fill((10, 10, 20))
+            pygame.draw.rect(surface=screen, color=(255, 231, 16), rect=pygame.Rect((screen.get_width()/2) - 250, 450, 500, 34))
             screen.blit(title, (((screen.get_width()-title.get_width())/2), 120))
-            screen.blit(hd2Font.render(f"Round {round}", True, (255, 233, 0)), (screen.get_width()/2 - 50, 380))
-            screen.blit(pygame.font.Font("Fonts/Swiss 721 Extended Bold.otf", 20).render(f"Score: {score}", True, (255, 255, 255)), (screen.get_width()/2 - 50, 420))
+            screen.blit(hd2Font.render(f"Round {round}", True, (0, 0, 0)), (screen.get_width()/2 - 50, 450))
+            screen.blit(pygame.font.Font("Fonts/Swiss 721 Extended Bold.otf", 20).render(f"Score: {score}", True, (255, 255, 255)), (screen.get_width()/2 - 50, 490))
+            pygame.draw.rect(surface=screen, color=(255, 231, 16), rect=pygame.Rect((screen.get_width()/2)-(barWidth/2), 550, barWidth, 10))
             pygame.display.flip()
             pygame.time.delay(2000)
-            codeswitch = True
-            barWidth = 500
             scoretimerAcumulator = 100
+            codeswitch = True
         #Lose condition
         if barWidth <= 0:
-            screen.fill((10, 10, 10))
-            screen.blit(hd2Font.render("GAME OVER", True, (240, 240, 240)), ((screen.get_width()-StratIndicator.get_width())/2, 400))
-            screen.blit(hd2Font.render("Press any key to Restart", True, (240, 240, 240)), ((screen.get_width()-StratIndicator.get_width())/2, 500))
+            screen.fill((10, 10, 20))
+            screen.blit(title, (((screen.get_width()-title.get_width())/2), 120))
+            screen.blit(hd2Font.render("GAME OVER", True, (240, 240, 240)), (screen.get_width()//2 - 100, 360))
+            screen.blit(hd2Font.render("Press any key to Restart", True, (240, 240, 240)), (screen.get_width()//2 - 200, 420))
             pygame.display.flip()
             pygame.time.delay(500)
 
