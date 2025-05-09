@@ -2,6 +2,7 @@ import pygame
 import random as R
 import json
 from pytimedinput import timedInput
+import time
 
 pygame.init()
 pygame.font.init()
@@ -31,8 +32,6 @@ strataQue = []
 round = 1
 colorswitch = False
 score = 0
-scoretimer = 800
-scoretimerAcumulator = 100
 
 #Centering formulas
 if  n%2 == 1:
@@ -80,13 +79,10 @@ with open('stratdict.json') as f:
                             PixelArrayList[i].replace(color1, color2)
                     colorswitch = True
                     startTime = pygame.time.get_ticks()
-            
-            if event.type == timerBarEvent:
-                barWidth -= 1.5 + (round)/5
         
         if codeswitch == True:
             #Bar Reset
-            if barWidth >= 500:
+            if barWidth <= 500:
                 barWidth = 500
             
             while len(strataQue) < 5 + round:
@@ -98,7 +94,8 @@ with open('stratdict.json') as f:
                     
             codeswitch = False
 
-
+        if event.type == timerBarEvent:
+                barWidth -= 1.5 + (round)/5
         screen.fill((10, 10, 20))
 
         #Arrow direction deciding
@@ -138,9 +135,8 @@ with open('stratdict.json') as f:
         #Font Rendering
         if len(strataQue) > 0:
             StratIndicator = hd2Font.render(f"{strataQue[0][1]}", True, (0, 0, 0))
-        pygame.draw.rect(surface=screen, color=(255, 231, 16), rect=pygame.Rect((screen.get_width()/2) - 250, 450, 500, 34))
+        pygame.draw.rect(surface=screen, color=(255, 231, 16), rect=pygame.Rect((screen.get_width()/2) - 270, 450, 540, 34))
         screen.blit(StratIndicator, ((screen.get_width()-StratIndicator.get_width())/2, 450))
-
         #TitleCard Rendering
         screen.blit(title, (((screen.get_width()-title.get_width())/2), 120))
     
@@ -151,10 +147,17 @@ with open('stratdict.json') as f:
                 screen.blit(pygame.transform.scale(pygame.image.load(f"StratagemIcons/{strataQue[i][1].replace(' ', '_')}_Icon.png"), (45,45)), ((((screen.get_width())-(44))/2)- 100 + 50*i, 400))
             except:
                 pass
+       
         #Score Rendering
         screen.blit(pygame.font.Font("Fonts/Swiss 721 Extended Bold.otf", 20).render(f"Score: {score}", True, (255, 255, 255)), (550, 400))
+        
         #Round Rendering
         screen.blit(pygame.font.Font("Fonts/Swiss 721 Extended Bold.otf", 20).render(f"Round: {round}", True, (255, 255, 255)), (150, 400))
+
+        #Extra Decoration Rendering
+        pygame.draw.rect(surface=screen, color=(250, 250, 250), rect=pygame.Rect((screen.get_width()/2) - 270, 580, 540, 5))    
+        pygame.draw.rect(surface=screen, color=(250, 250, 250), rect=pygame.Rect((screen.get_width()/2) - 270, 380, 540, 5))    
+
         #Centering
         if  n%2 == 1:
             x = (((screen.get_width())/2)-16) - 50*int(n/2 - 0.1)
@@ -169,24 +172,22 @@ with open('stratdict.json') as f:
             pygame.time.delay(40)
             score += 5 * len(strataQue[0][0])
             strataQue.pop(0)
-            #Score Timer
-            if scoretimer > 0:
-                scoretimerAcumulator += scoretimer
 
         #Round increment
         if len(strataQue) == 0:
             barWidth = 500
             round += 1
-            score * (scoretimerAcumulator/1000)
+            score += 100 + 50*round
             screen.fill((10, 10, 20))
             pygame.draw.rect(surface=screen, color=(255, 231, 16), rect=pygame.Rect((screen.get_width()/2) - 250, 450, 500, 34))
             screen.blit(title, (((screen.get_width()-title.get_width())/2), 120))
             screen.blit(hd2Font.render(f"Round {round}", True, (0, 0, 0)), (screen.get_width()/2 - 50, 450))
             screen.blit(pygame.font.Font("Fonts/Swiss 721 Extended Bold.otf", 20).render(f"Score: {score}", True, (255, 255, 255)), (screen.get_width()/2 - 50, 490))
             pygame.draw.rect(surface=screen, color=(255, 231, 16), rect=pygame.Rect((screen.get_width()/2)-(barWidth/2), 550, barWidth, 10))
+            pygame.draw.rect(surface=screen, color=(250, 250, 250), rect=pygame.Rect((screen.get_width()/2) - 270, 580, 540, 5))    
+            pygame.draw.rect(surface=screen, color=(250, 250, 250), rect=pygame.Rect((screen.get_width()/2) - 270, 380, 540, 5))    
             pygame.display.flip()
-            pygame.time.delay(2000)
-            scoretimerAcumulator = 100
+            time.sleep(1.5)
             codeswitch = True
         #Lose condition
         if barWidth <= 0:
@@ -213,5 +214,4 @@ with open('stratdict.json') as f:
         if barWidth >= 500:
             barWidth = 500
 
-        scoretimer -= 1
         clock.tick(60)
